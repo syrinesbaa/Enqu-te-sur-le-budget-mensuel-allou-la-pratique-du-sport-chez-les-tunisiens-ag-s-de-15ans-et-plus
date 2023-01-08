@@ -1,0 +1,702 @@
+library(ggplot2)
+library(readxl)
+Lecture des données
+sport <- readexcel(”C : /Users/syrinesbaa/Desktop/P c
+Syrine/downloads/sport2.xlsx")
+View(sport)
+Affichage des premeières valeurs de la base
+head(sport)
+attach(sport)
+summary(sport) Analyse statistiques descriptives
+table(sportSalle)sexe :
+install.packages("plotrix")
+library(plotrix)
+freq=table(sportSexe)/100
+x=c(freq[1],freq[2])
+names(x)=c("Femme 51
+pie3D(freq,labels=names(x),col=c("firebrick1","deepskyblue3")) age
+freq1=table(sportAutresDpenses)/100
+xp=c(1,2)
+names(xp)=c("Oui (49
+pie(freq1,labels=names(xp),col=c("deepskyblue3","firebrick1")) categorie socio pro
+freq1=table(sportCategoriesocioprofessionnelle)/100
+xp=c(1,2,3)
+names(xp)=c(" À la retraite/inactif(ve) (6d’emploi (50
+pie(freq1,labels=names(xp),col=c("deeppink4","darksalmon","cornsilk3")) statut
+freq1=table(sportStatutMatrimonial)/100
+xp=c(1,2,3)
+names(xp)=c(" Célibataire (71"," Marié(e) (27
+pie(freq1,labels=names(xp),col=c("darkolivegreen2","darkgoldenrod3","darkseagreen")) HEURES
+freq1=table(sportHeures)/100
+xp=c(1,2,3,4)
+names(xp)=c(" Plus de 7 heuress (16
+pie(freq1,labels=names(xp),col=c("indianred1","lightpink1","ivory3","khaki")) est ce qui’ils ont des
+depenses hors abonnement ou pas
+
+34
+
+Annexe
+
+freq1=table(sportAutresDpenses)/100
+xp=c(1,2)
+names(xp)=c("Oui (49
+pie(freq1,labels=names(xp),col=c("indianred1","lightpink1")) budget
+freq1=table(sport2BudgetMensuel)/100
+xp=c(1,2,3)
+names(xp)=c("Entre 50 et 100 Dinars (39
+pie(freq1,labels=names(xp),col=c("indianred1","azure","khaki"))
+library(MASS)
+library(lpSolve)
+library(sampling)
+library(ggplot2)
+library(readxl)
+Lecture des données
+Sondage <- readexcel(”C : /Users/M ars/Downloads/sport2 − 1.xlsx”)
+attach(Sondage)
+p<-1 :100 pour identifier les individus de la population
+Sondage<-cbind(Sondage,p)
+View(Sondage)
+Création de la variable d’intérêt : Budgetmensuel
+y<-SondageBudgetMensuel
+y
+N<-100 taille de la population
+n<-20
+calcul de la moyenne et de la variance dans la population
+moy<-mean(y)
+v<-var(y)
+moy le budget mensuel moyen
+v la variance
+SAS : PESR et PEAR Selection de l’échantillon sans remise
+Mtech < −matrix(0, nrow = 20, ncol = 20)M atricechantillon(pour
+stocker les 20 échantillon)
+IC=matrix(0,nrow = 20,ncol = 2) Pour les 20 intervalles de confiance
+ypesr < −c()pourles20estimateursdelamoyenne
+vpesr < −c()pourles20estimateursdelavariance
+Tirage de 20 échantillons sans remise
+for (i in 1 :20)
+s<-srswor(n,N)
+Mtech[, i] < −y[s == 1][1 : 20]
+ypesr[i] < −mean(M tech[, i])
+vpesr[i] < −var(M tech[, i])
+Intervalles de confiance
+
+35
+
+Annexe
+
+for (i in 1 :20)
+IC[i,]=c(ypesr[i] − 1.96 ∗ sqrt(var(ypesr)/20),
+ypesr[i] + 1.96 ∗ sqrt(var(ypesr)/20))
+l<-IC[,2]-IC[,1]
+moyypesr = mean(ypesr)/round(M tech, 1)les20chantillonssonttirsetvoicilesrsultats44
+ypesrlesestimateursdelamoyenne
+vpesrlesestimateursdelavariance
+IC les 20 intervalles de confiance
+l longueur des intervalles de confiance
+Représentation graphique des Intervalles de confiance
+plot(seq(1,20,by=1),IC[,1],col="red4",xlab="Echantillons",ylab="Intervalles de confiance", ylim =
+c(min(min(IC[,2]),min(IC[,1])),max(max(IC[,2]),max(IC[,1]))))
+lines(seq(1,20,by=1),IC[,1],col="green")
+points(seq(1,20,by=1),IC[,2],col="red4")
+lines(seq(1,20,by=1),IC[,2],col="green")
+moyypesrmoyennedes20estimateurs
+Selection de E avec remise
+ech1<-matrix(0,nrow = 20,ncol = 20) Matrice échantillon (pour stocker les 20 échantillon)
+IC=matrix(0,nrow = 20,ncol = 2) Pour les 20 intervalles de confiance
+ypear < −c()pourles20estimateursdelamoyenne
+vpear < −c()pourles20estimateursdelavariance
+Tirage de 20 échantillons avec remise
+for (j in 1 :20)
+ech1[,j]<-sample(y,20,replace=TRUE)
+ypear[j] < −mean(ech1[, j])
+vpear[j] < −var(ech1[, j])
+les intervalles de confiances
+for (j in 1 :20)
+IC[j,]=c(ypear[j] − 1.96 ∗ sqrt(var(ypear)/20),
+ypear[j] + 1.96 ∗ sqrt(var(ypear)/20))
+l1<-IC[,2]-IC[,1] calcul du longueur de l’intervalle
+moyypear = mean(ypear)
+round(ech1,1) les 20 échantillons sont tirés et les résultats
+ypearlesestimateursdelamoyenne
+vpearlesestimateursdelavariance
+IC les 20 intervalles de confiance
+l1 longueur des intervalles de confiance
+Représentation graphique des Intervalles de confiance
+plot(seq(1,20,by=1),IC[,1],col="red4",xlab = "Echantillons" , ylab = "Intervalles de confiance", ylim
+= c(min(min(IC[,2]),min(IC[,1])),max(max(IC[,2]),max(IC[,1]))))
+lines(seq(1,20,by=1),IC[,1],col="blue4")
+points(seq(1,20,by=1),IC[,2],col="red4")
+36
+
+Annexe
+
+lines(seq(1,20,by=1),IC[,2],col="blue4")
+moyypearmoyennedes20estimateurs
+Sondage aléatoire à probabilités inégales
+PISR tirage sans remise
+Nous ferons le sondage en utilisant la méthode systématique
+Calul des probabilités d’inclusion
+pi < −inclusionprobabilities(y, 20)
+sum(pi)onvrif iequelasommeestgalen
+déclaration
+ech2<-matrix(0,nrow = 20,ncol = 20) Matrice échantillon (pour stocker les 20 échantillon)
+IC=matrix(0,nrow = 20,ncol = 2) Pour les 20 intervalles de confiance
+ypisr < −c()pourles20estimateursdelamoyenne
+vpisr < −c()pourles20estimateursdelavariance
+Tirage de 20 échantillons sans remise
+for (e in 1 :20)
+s=UPsystematic(pi)
+ech2[,e]<-y[s==1][1 :20]
+ypisr[e] < −mean(ech2[, e])
+vpisr[e] < −var(ech2[, e])
+les intervalles de confiances
+for (j in 1 :20)
+IC[j,]=c(ypisr[j] − 1.96 ∗ sqrt(var(ypisr)/20), ypisr[j] + 1.96 ∗ sqrt(var(ypisr)/20))
+l2<-IC[,2]-IC[,1] calcul du longueur de l’intervalle
+moyypisr < −mean(ypisr)
+Resultats sont :
+round(ech2,1) le budget mensuel dans les échantillons tirés
+ypisrlesestimateursdelamoyenne
+vpisrlesestimateursdelavariance
+IC les 20 intervalles de confiance
+l2 longueur des intervalles de confiance
+Représentation graphique des Intervalles de confiance
+plot(seq(1,20,by=1),IC[,1],col="red4",
+xlab="Echantillons",ylab="Intervalles de confiance",
+ylim = c(min(min(IC[,2]),min(IC[,1])),max(max(IC[,2]),max(IC[,1]))))
+lines(seq(1,20,by=1),IC[,1],col="orange")
+points(seq(1,20,by=1),IC[,2],col="red4")
+lines(seq(1,20,by=1),IC[,2],col="orange")
+moyypisrmoyennedes20estimateurs
+PIAR Avec Remise
+pj < −inclusionprobabilities(y, 20)/n
+sum(pj )
+v=c(0,cumsum(pj ))
+
+37
+
+Annexe
+
+v
+ech3<-matrix(0,nrow = 20,ncol = 20) Matrice échantillon (pour stocker les 20 échantillon)
+IC=matrix(0,nrow = 20,ncol = 2) Pour les 20 intervalles de confiance
+ypiar < −c()pourles20estimateursdelamoyenne
+vpiar < −c()pourles20estimateursdelavariance
+Tirage de 20 échantillons avec remise
+for (e in 1 :20)
+s=NULL
+for (i in 1 :20) u<-runif(1,0,1)
+for (j in 2 :101)
+if((v[j-1]<=u)(v[j]>u))
+s<-c(s,j-1)
+ech3[,e]<-y[s]
+ypiar[e] < −mean(ech3[, e])
+vpiar[e] < −var(ech3[, e])
+les intervalles de confiances
+for (j in 1 :20)
+IC[j,]=c(ypiar[j] − 1.96 ∗ sqrt(var(ypiar)/20), ypiar[j] + 1.96 ∗ sqrt(var(ypiar)/20))
+l3<-IC[,2]-IC[,1] calcul du longueur de l’intervalle
+moyypiar < −mean(ypiar)
+Resultats sont ci-dessous :
+round(ech3,1) l’IMC dans les échantillons tirés
+ypiarlesestimateursdelamoyenne
+vpiarlesestimateursdelavariance
+IC les 20 intervalles de confiance
+l3 longueur des intervalles de confiance
+Représentation graphique des Intervalles de confiance
+plot(seq(1,20,by=1),IC[,1],col="red4",
+xlab = "Echantillons",ylab = "Intervalles de confiance",
+ylim = c(min(min(IC[,2]),min(IC[,1])),max(max(IC[,2]),max(IC[,1]))))
+lines(seq(1,20,by=1),IC[,1],col="green")
+points(seq(1,20,by=1),IC[,2],col="red4")
+lines(seq(1,20,by=1),IC[,2],col="green")
+moyypiarmoyennedes20estimateurs
+3.La stratification
+Strates de même taille
+La var sexe sera utilité comme var de stratification
+N1<-sum(Sexe=="Homme")
+N2<-sum(Sexe=="Femme")
+ech4<-matrix(0,nrow = 20,ncol = 20) Matrice échantillon (pour stocker les 20 échantillon)
+IC=matrix(0,nrow = 20,ncol = 2) Pour les 20 intervalles de confiance
+ystrat1 < −c()pourles20estimateursdelamoyenne
+38
+
+Annexe
+
+vstrat1 < −c()pourles20estimateursdelavariance
+Tirage de 20 échantillons
+for (i in 1 :20)
+s<- strata(Sondage[order(SondageSexe), ], stratanames = ”Sexe”, size = c(10, 10), method =
+”srswor”)
+ech4[,i]<-y[sIDunit]
+ystrat1[i] < −mean(ech4[, i])
+vstrat1[i] < −var(ech4[, i])
+Intervalles de confiance
+for (j in 1 :20)
+IC[j,]=c(ystrat1[j] − 1.96 ∗ sqrt(var(ystrat1)/20), ystrat1[j] + 1.96 ∗ sqrt(var(ystrat1)/20))
+l4<-IC[,2]-IC[,1] calcul du longueur de l’intervalle
+moyystrat1 < −mean(ystrat1)
+Resultats sont ci-dessous :
+round(ech4,1) le budget mensuel dans les échantillons tirés
+ystrat1lesestimateursdelamoyenne
+vstrat1lesestimateursdelavariance
+IC les 20 intervalles de confiance
+l4 longueur des intervalles de confiance
+Représentation graphique des Intervalles de confiance
+plot(seq(1,20,by=1),IC[,1],col="red4", xlab = "Echantillons",ylab = "Intervalles de confiance", ylim
+= c(min(min(IC[,2]),min(IC[,1])),max(max(IC[,2]),max(IC[,1]))))
+lines(seq(1,20,by=1),IC[,1],col="yellow")
+points(seq(1,20,by=1),IC[,2],col="red4")
+lines(seq(1,20,by=1),IC[,2],col="yellow")
+moyystrat1moyennedes20estimateurs
+Stratification à allocations proportionnelles
+n1<-round((n/N)*N1)
+n2<-round((n/N)*N2)
+ech5<-matrix(0,nrow = 20,ncol = 20) Matrice échantillon (pour stocker les 20 échantillon)
+IC=matrix(0,nrow = 20,ncol = 2) Pour les 20 intervalles de confiance
+ystatP < −c()pourles20estimateursdelamoyenne
+vstatP < −c()pourles20estimateursdelavariance
+Tirage de 20 échantillons
+for (i in 1 :20)
+s<-strata(Sondage[order(SondageSexe), ], stratanames = ”Sexe”, size = c(n1, n2), method =
+”srswor”)
+ech5[,i]<-y[sIDunit]
+ystatP[i] < −mean(ech5[, i])
+vstatP[i] < −var(ech5[, i])
+Intervalles de confiance
+for (j in 1 :20)
+
+39
+
+Annexe
+
+IC[j,]=c(ystatP[j] − 1.96 ∗ sqrt(var(ystatP)/20), ystatP[j] + 1.96 ∗ sqrt(var(ystatP)/20))
+l5<-IC[,2]-IC[,1] calcul du longueur de l’intervalle
+moyystatP < −mean(ystatP)
+Resultats sont ci-dessous :
+round(ech5,1) le budget mensuel dans les échantillons tirés
+ystatPlesestimateursdelamoyenne
+vstatPlesestimateursdelavariance
+IC les 20 intervalles de confiance
+l5 longueur des intervalles de confiance
+Représentation graphique des Intervalles de confiance
+plot(seq(1,20,by=1),IC[,1],col="red4", xlab = "Echantillons",ylab = "Intervalles de confiance", ylim
+= c(min(min(IC[,2]),min(IC[,1])),max(max(IC[,2]),max(IC[,1]))))
+lines(seq(1,20,by=1),IC[,1],col="yellow4")
+points(seq(1,20,by=1),IC[,2],col="red4")
+lines(seq(1,20,by=1),IC[,2],col="yellow4")
+moyystatP
+Allocation Optimale
+yf < −SondageBudgetMensuel
+yh < −SondageBudgetMensuel
+Taille des strates
+nf<-round((20*N1*sqrt((n/(n-1))*var(yf )))/(N1∗sqrt((n/(n−1))∗var(yf ))+N2∗sqrt((n/(n−
+1)) ∗ var(yh))))nf
+nh<-round((20*N1*sqrt((n/(n-1))*var(yh)))/(N1∗sqrt((n/(n−1))∗var(yf ))+N2∗sqrt((n/(n−
+1)) ∗ var(yh))))nh
+déclaration
+ech6<-matrix(0,nrow = 20,ncol = 20) Matrice échantillon (pour stocker les 20 échantillon)
+IC=matrix(0,nrow = 20,ncol = 2) Pour les 20 intervalles de confiance
+ystratopt < −c()pourles20estimateursdelamoyenne
+vstratopt < −c()pourles20estimateursdelavariance
+Tirage de 20 échantillons
+for (i in 1 :20)
+s<-strata(Sondage[order(SondageSexe), ], stratanames = ”Sexe”, size = c(nf, nh), method =
+”srswor”)ech6[, i] < −y[sIDunit]
+ystratopt[i] < −mean(ech6[, i])
+vstratopt[i] < −var(ech6[, i])
+Intervalles de confiance
+for (j in 1 :20)
+IC[j,]=c(ystratopt[j]−1.96∗sqrt(var(ystratopt)/20), ystratopt[j]+1.96∗sqrt(var(ystratopt)/20))
+l6<-IC[,2]-IC[,1] calcul du longueur de l’intervalle
+moyystratopt < −mean(ystratopt)
+Resultats sont ci-dessous :
+round(ech6,1) le budget mensuel dans les échantillons tirés
+
+40
+
+Annexe
+
+ystratoptlesestimateursdelamoyenne
+vstratoptlesestimateursdelavariance
+IC les 20 intervalles de confiance
+l6 longueur des intervalles de confiance
+Représentation graphique des Intervalles de confiance
+plot(seq(1,20,by=1),IC[,1],col="red4",
+xlab = "Echantillons",ylab = "Intervalles de confiance",
+ylim = c(min(min(IC[,2]),min(IC[,1])),max(max(IC[,2]),max(IC[,1]))))
+lines(seq(1,20,by=1),IC[,1],col="yellow3")
+points(seq(1,20,by=1),IC[,2],col="red4")
+lines(seq(1,20,by=1),IC[,2],col="yellow3")
+moyystratopt
+Sondage à plusieurs dégré
+SONDAGE PAR GRAPPE
+ech7<-matrix(0,nrow =60,ncol=10) Matrice qui contiendra les 10 échantillons
+IC<-matrix(0,nrow = 10,ncol=2) Matrice pour les 10 intervalles de confiances
+ygrap < −c()pourstockerles10estimateursdelamoyenne
+vgrap < −c()pourlavariance
+Nous allons travailler avec la valeur auxiliaire "Heures" temps consacrés au sport
+m<-c("Entre 1 et 3 heures","Entre 3 et 5 heures ,”Entre 5 et 7 heures","Plus de 7 heures")
+M=4
+1er tirage
+ech71<-c() le vecteur du premier tirage
+s=sample(m,2)
+ech71<-c(y[Heures==s[1]],y[Heures==s[2]])
+ech7[1 :length(ech71),1]<-ech71 matrice ech7
+répétion de l’opération 10 fois
+ygrap[1] < −mean(ech71)
+vgrap[1] = var(ech71)
+2è tirage
+ech72<-c()
+s<-sample(m,2)
+ech72<-c(y[Heures==s[1]],y[Heures==s[2]])
+ech7[1 :length(ech72),2]<-ech72
+ygrap < −c(ygrap, mean(ech72))
+vgrap < −c(vgrap, var(ech72))
+3ème tirage
+ech73<-c()
+s<-sample(m,2)
+ech73<-c(y[Heures==s[1]],y[Heures==s[2]])
+ech7[1 :length(ech73),3]=ech73
+ygrap < −c(ygrap, mean(ech73))
+
+41
+
+Annexe
+
+vgrap < −c(vgrap, var(ech73))
+4è tirage
+ech74<-c()
+s<-sample(m,2)
+ech74<-c(y[Heures==s[1]],y[Heures==s[2]])
+ech7[1 :length(ech74),4]=ech74
+ygrap < −c(ygrap, mean(ech74))
+vgrap < −c(vgrap, var(ech74))
+5è tirage
+ech75<-c()
+s<-sample(m,2)
+ech75<-c(y[Heures==s[1]],y[Heures==s[2]])
+ech7[1 :length(ech75),5]=ech75
+ygrap < −c(ygrap, mean(ech75))
+vgrap < −c(vgrap, var(ech75))
+6è tirage
+ech76<-c()
+s<-sample(m,2)
+ech76<-c(y[Heures==s[1]],y[Heures==s[2]])
+ech7[1 :length(ech76),6]=ech76
+ygrap < −c(ygrap, mean(ech76))
+vgrap < −c(vgrap, var(ech76))
+7è tirage
+ech77<-c()
+s<-sample(m,2)
+ech77<-c(y[Heures==s[1]],y[Heures==s[2]])
+ech7[1 :length(ech77),7]=ech77
+ygrap < −c(ygrap, mean(ech77))
+vgrap < −c(vgrap, var(ech77))
+8è tirage
+ech78<-c()
+s<-sample(m,2)
+ech78<-c(y[Heures==s[1]],y[Heures==s[2]])
+ech7[1 :length(ech78),8]=ech78
+ygrap < −c(ygrap, mean(ech78))
+vgrap < −c(vgrap, var(ech78))
+9è tirage
+ech79<-c()
+s<-sample(m,2)
+ech79<-c(y[Heures==s[1]],y[Heures==s[2]])
+ech7[1 :length(ech79),9]=ech79
+ygrap < −c(ygrap, mean(ech79))
+
+42
+
+Annexe
+
+vgrap < −c(vgrap, var(ech79))
+10è tirage
+ech75<-c()
+s<-sample(m,2)
+ech710<-c(y[Heures==s[1]],y[Heures==s[2]])
+ech7[1 :length(ech710),10]=ech710
+ygrap < −c(ygrap, mean(ech710))
+vgrap < −c(vgrap, var(ech710))
+Intervalles de confiance
+for (j in 1 :10)
+IC[j,]=c(ygrap[j]−1.96∗sqrt(var(ygrap)/sum(ech7[, j]! = 0)), ygrap[j]+1.96∗sqrt(var(ygrap)/sum(ech7[, j]! =
+0)))
+l7<-IC[,2]-IC[,1] calcul du longueur de l’intervalle
+moyygrap < −mean(ygrap)
+Resultats sont ci-dessous :
+round(ech7,1) l’IMC dans les échantillons tirés
+ygraplesestimateursdelamoyenne
+vgraplesestimateursdelavariance
+IC les 20 intervalles de confiance
+l7 longueur des intervalles de confiance
+Représentation graphique des Intervalles de confiance
+plot(seq(1,10,by=1),IC[,1],col="red4",xlab = "Echantillons", ylab = "Intervalles de confiance", ylim
+= c(min(min(IC[,2]),min(IC[,1])),max(max(IC[,2]),max(IC[,1]))))
+lines(seq(1,10,by=1),IC[,1],col="yellow3")
+points(seq(1,10,by=1),IC[,2],col="red4")
+lines(seq(1,10,by=1),IC[,2],col="yellow3")
+moyygrap
+Sondage à deux dégré
+ech8<-matrix(0,nrow = 60,ncol=10) Matrice qui contiendra les 10 échantillons
+IC<-matrix(0,nrow = 10,ncol=2) Matrice pour les 10 intervalles de confiances
+y2deg < −c()pourstockerles10estimateursdelamoyenne
+v2deg < −c()pourdelavarianceNousallonstravailleraveclavariableauxiliaire”Heures”
+temps consacrés au sport
+cbind(Sondage,p)
+1er tirage
+s1<-c()
+s1<-sample(m,2)
+grp1<-Sondage[Heures==s1[1],]
+grp2<-Sondage[Heures==s1[2],]
+taille de l’échantillon tiré dans les grappes
+if(round(length(grp1p)/5) == 0)nh1 = 1
+if(round(length(grp1p)/5) > 0)nh1 = round(length(grp1p)/5)
+
+43
+
+Annexe
+
+if(round(length(grp1p)/5) == 0)nh2 = 1
+if(round(length(grp1p)/5) > 0)nh2 = round(length(grp1p)/5)
+tirage dans les grappes
+s2=c(sample(grp1p, nh1), sample(grp2p,nh2))
+ech81<-c()
+ech81[1]=y[p==s2[1],]
+for (i in (2 :length(s2)))
+ech81<-c(ech81,y[p==s2[i],])
+ech8[1 :length(ech81),1]=ech81
+y2deg < −mean(ech81)
+v2deg < −mean(ech81)
+2è tirage
+s1<-c()
+s1<-sample(m,2)
+grp1<-Sondage[Heures==s1[1],]
+grp2<-Sondage[Heures==s1[2],]
+taille de l’échantillon tiré dans les grappes
+if(round(length(grp1p)/5) == 0)nh1 = 1
+if(round(length(grp1p)/5) > 0)nh1 = round(length(grp1p)/5)
+if(round(length(grp1p)/5) == 0)nh2 = 1
+if(round(length(grp1p)/5) > 0)nh2 = round(length(grp1p)/5)
+tirage dans les grappes
+s2=c(sample(grp1p, nh1), sample(grp2p,nh2))
+ech82<-c()
+ech82[1]=y[p==s2[1]]
+for (i in (2 :length(s2)))
+ech82<-c(ech82,y[p==s2[i]])
+ech8[1 :length(ech82),2]=ech82
+y2deg < −c(y2deg, mean(ech82))
+v2deg < −c(v2deg, var(ech82))
+3è tirage
+s1<-c()
+s1<-sample(m,2)
+grp1<-Sondage[Heures==s1[1],]
+grp2<-Sondage[Heures==s1[2],]
+taille de l’échantillon tiré dans les grappes
+if(round(length(grp1p)/5) == 0)nh1 = 1
+if(round(length(grp1p)/5) > 0)nh1 = round(length(grp1p)/5)
+if(round(length(grp1p)/5) == 0)nh2 = 1
+if(round(length(grp1p)/5) > 0)nh2 = round(length(grp1p)/5)
+tirage dans les grappes
+s2=c(sample(grp1p, nh1), sample(grp2p,nh2))
+44
+
+Annexe
+
+ech83<-c()
+ech83[1]=y[p==s2[1]]
+for (i in (2 :length(s2)))
+ech83<-c(ech83,y[p==s2[i]])
+ech8[1 :length(ech83),3]=ech83
+y2deg < −c(y2deg, mean(ech83))
+v2deg < −c(v2deg, var(ech83))
+4è tirage
+s1<-c()
+s1<-sample(m,2)
+grp1<-Sondage[Heures==s1[1],]
+grp2<-Sondage[Heures==s1[2],]
+taille de l’échantillon tiré dans les grappes
+if(round(length(grp1p)/5) == 0)nh1 = 1
+if(round(length(grp1p)/5) > 0)nh1 = round(length(grp1p)/5)
+if(round(length(grp1p)/5) == 0)nh2 = 1
+if(round(length(grp1p)/5) > 0)nh2 = round(length(grp1p)/5) tirage dans les grappes
+s2=c(sample(grp1p, nh1), sample(grp2p,nh2))
+ech84<-c()
+ech84[1]=y[p==s2[1]]
+for (i in (2 :length(s2)))
+ech84<-c(ech84,y[p==s2[i]])
+ech8[1 :length(ech84),4]=ech84
+y2deg < −c(y2deg, mean(ech84))
+v2deg < −c(v2deg, var(ech84))5tirage
+s1<-c()
+s1<-sample(m,2)
+grp1<-Sondage[Heures==s1[1],]
+grp2<-Sondage[Heures==s1[2],]
+taille de l’échantillon tiré dans les grappes
+if(round(length(grp1p)/5) == 0)nh1 = 1
+if(round(length(grp1p)/5) > 0)nh1 = round(length(grp1p)/5)
+if(round(length(grp1p)/5) == 0)nh2 = 1
+if(round(length(grp1p)/5) > 0)nh2 = round(length(grp1id)/5)
+tirage dans les grappes
+s2=c(sample(grp1p, nh1), sample(grp2p,nh2))
+ech85<-c()
+ech85[1]=y[p==s2[1]]
+for (i in (2 :length(s2)))
+ech85<-c(ech85,y[p==s2[i]])
+ech8[1 :length(ech85),5]=ech85
+y2deg < −c(y2deg, mean(ech85))
+
+45
+
+Annexe
+
+v2deg < −c(v2deg, var(ech85))
+6è tirage
+s1<-c()
+s1<-sample(m,2)
+grp1<-Sondage[Heures==s1[1],]
+grp2<-Sondage[Heures==s1[2],]
+taille de l’échantillon tiré dans les grappes
+if(round(length(grp1p)/5) == 0)nh1 = 1
+if(round(length(grp1p)/5) > 0)nh1 = round(length(grp1p)/5)
+if(round(length(grp1p)/5) == 0)nh2 = 1
+if(round(length(grp1p)/5) > 0)nh2 = round(length(grp1p)/5)
+tirage dans les grappes
+s2=c(sample(grp1p, nh1), sample(grp2p,nh2))
+ech86<-c()
+ech86[1]=y[p==s2[1]]
+for (i in (2 :length(s2)))
+ech86<-c(ech86,y[p==s2[i]])
+ech8[1 :length(ech86),6]=ech86
+y2deg < −c(y2deg, mean(ech86))
+v2deg < −c(v2deg, var(ech86))
+7è tirage
+s1<-c()
+s1<-sample(m,2)
+grp1<-Sondage[Heures==s1[1],]
+grp2<-Sondage[Heures==s1[2],]
+taille de l’échantillon tiré dans les grappes
+if(round(length(grp1p)/5) == 0)nh1 = 1
+if(round(length(grp1p)/5) > 0)nh1 = round(length(grp1p)/5)
+if(round(length(grp1p)/5) == 0)nh2 = 1
+if(round(length(grp1p)/5) > 0)nh2 = round(length(grp1p)/5)
+tirage dans les grappes
+s2=c(sample(grp1p, nh1), sample(grp2p,nh2))
+ech87<-c()
+ech87[1]=y[p==s2[1]]
+for (i in (2 :length(s2)))
+ech87<-c(ech87,y[p==s2[i]])
+ech8[1 :length(ech87),7]=ech87
+y2deg < −c(y2deg, mean(ech87))
+v2deg < −c(v2deg, var(ech87))
+8è tirage
+s1<-c()
+s1<-sample(m,2)
+
+46
+
+Annexe
+
+grp1<-Sondage[Heures==s1[1],]
+grp2<-Sondage[Heures==s1[2],]
+taille de l’échantillon tiré dans les grappes
+if(round(length(grp1p)/5) == 0)nh1 = 1
+if(round(length(grp1p)/5) > 0)nh1 = round(length(grp1p)/5)
+if(round(length(grp1p)/5) == 0)nh2 = 1
+if(round(length(grp1p)/5) > 0)nh2 = round(length(grp1p)/5)
+tirage dans les grappes
+s2=c(sample(grp1p, nh1), sample(grp2p,nh2))
+ech88<-c()
+ech88[1]=y[p==s2[1]]
+for (i in (2 :length(s2)))
+ech88<-c(ech88,y[p==s2[i]])
+ech8[1 :length(ech88),8]=ech88
+y2deg < −c(y2deg, mean(ech88))
+v2deg < −c(v2deg, var(ech88))
+9è tirage
+s1<-c()
+s1<-sample(m,2)
+grp1<-Sondage[Heures==s1[1],]
+grp2<-Sondage[Heures==s1[2],]
+taille de l’échantillon tiré dans les grappes
+if(round(length(grp1p)/5) == 0)nh1 = 1
+if(round(length(grp1p)/5) > 0)nh1 = round(length(grp1p)/5)
+if(round(length(grp1p)/5) == 0)nh2 = 1
+if(round(length(grp1p)/5) > 0)nh2 = round(length(grp1p)/5)
+tirage dans les grappes
+s2=c(sample(grp1p, nh1), sample(grp2p,nh2))
+ech89<-c()
+ech89[1]=y[p==s2[1]]
+for (i in (2 :length(s2)))
+ech89<-c(ech89,y[p==s2[i]])
+ech8[1 :length(ech89),9]=ech89
+y2deg < −c(y2deg, mean(ech89))
+v2deg < −c(v2deg, var(ech89))
+10è tirage
+s1<-c()
+s1<-sample(m,2)
+grp1<-Sondage[Heures==s1[1],]
+grp2<-Sondage[Heures==s1[2],]
+taille de l’échantillon tiré dans les grappes
+if(round(length(grp1p)/5) == 0)nh1 = 1
+47
+
+Annexe
+
+if(round(length(grp1p)/5) > 0)nh1 = round(length(grp1p)/5)
+if(round(length(grp1p)/5) == 0)nh2 = 1
+if(round(length(grp1p)/5) > 0)nh2 = round(length(grp1p)/5)
+tirage dans les grappes
+s2=c(sample(grp1p, nh1), sample(grp2p,nh2))
+ech810<-c()
+ech810[1]=y[p==s2[1]]
+for (i in (2 :length(s2)))
+ech810<-c(ech810,y[p==s2[i]])
+ech8[1 :length(ech810),10]=ech810
+y2deg < −c(y2deg, mean(ech810))
+v2deg < −c(v2deg, var(ech810))
+Intervalles de confiance
+for (j in 1 :10)
+IC[j,]=c(y2deg[j]−1.96∗sqrt(var(y2deg)/sum(ech8[, j]! = 0)), y2deg[j]+1.96∗sqrt(var(y2deg)/sum(ech8[, j]! =
+0)))
+l8<-IC[,2]-IC[,1] calcul du longueur de l’intervalle
+moyy2deg < −mean(y2deg)
+Resultats sont ci-dessous :
+round(ech8,1) l’IMC dans les échantillons tirés
+y2deglesestimateursdelamoyenne
+v2deglesestimateursdelavariance
+IC les 20 intervalles de confiance
+l8 longueur des intervalles de confiance
+Représentation graphique des Intervalles de confiance
+plot(seq(1,10,by=1),IC[,1],col="red4", xlab = "Echantillons",ylab = "Intervalles de confiance", ylim
+= c(min(min(IC[,2]),min(IC[,1])),max(max(IC[,2]),max(IC[,1]))))
+lines(seq(1,10,by=1),IC[,1],col="yellow2")
+points(seq(1,10,by=1),IC[,2],col="red4")
+lines(seq(1,10,by=1),IC[,2],col="yellow2")
+moyy2deg
+6/ Redressement par le quotient :
+Sondage de type PESR
+s=srswor(n,N)
+echantillon=y[s==1]
+moyenne=mean(echantillon)
+Alors l’estimateur de la moyenne avant redressement par quotion est :
+moyenne
+[1] 107.25
+Or on connait que la proportion des femmes dans la population est
+P=sum(Sexe=="Femme")/N
+P
+
+48
+
+Annexe
+
+[1] 0.51
+Alors que la proportion des femmes dans l’echantillon est
+p=sum(Sexe[s==1]=="Femme")/n
+p
+[1] 0.45
+L’estimateur de la moyenne apres redressement par quotion est : ‘
+moyenne.red=(P/p)*moyenne
+moyenne.red
+[1] 121.55
